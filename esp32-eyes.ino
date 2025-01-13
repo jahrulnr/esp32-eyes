@@ -33,9 +33,25 @@ void setup(void) {
   face->Expression.GoTo_Normal();
 
   // Assign a weight to each emotion
-  //face->Behavior.SetEmotion(eEmotions::Normal, 1.0);
-  //face->Behavior.SetEmotion(eEmotions::Angry, 1.0);
-  //face->Behavior.SetEmotion(eEmotions::Sad, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Normal, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Angry, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Sad, 0.5);
+  face->Behavior.SetEmotion(eEmotions::Glee, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Happy, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Worried, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Focused, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Annoyed, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Surprised, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Skeptic, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Frustrated, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Unimpressed, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Sleepy, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Suspicious, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Squint, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Furious, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Scared, 1.0);
+  face->Behavior.SetEmotion(eEmotions::Awe, 1.0);
+  face->Behavior.Timer.SetIntervalMillis(10000);
   // Automatically switch between behaviours (selecting new behaviour randomly based on the weight assigned to each emotion)
   face->RandomBehavior = true;
 
@@ -45,7 +61,8 @@ void setup(void) {
   face->Blink.Timer.SetIntervalMillis(4000);
 
   // Automatically choose a new random direction to look
-  face->RandomLook = false;
+  face->RandomLook = true;
+  face->Look.Timer.SetIntervalMillis(400);
 }
 
 float mapFloat(float x, float in_min, float in_max, float out_min, float out_max) {
@@ -66,8 +83,8 @@ void loop(){
   // To avoid making eyes too twitchy (and to allow time for previous move animation to end),
   // only recalculate new position every 500ms
   if(millis() - lastMoveTime > 500) {
-    int yRaw = analogRead(25);
-    int xRaw = analogRead(26);
+    int yRaw = analogRead(joystickPins[0]);
+    int xRaw = analogRead(joystickPins[1]);
     float y = mapFloat(yRaw, 0, 4095, 1.0, -1.0);
     float x = mapFloat(xRaw, 0, 4095, -1.0, 1.0);
     face->Look.LookAt(x, y);
